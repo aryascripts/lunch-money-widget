@@ -11,7 +11,7 @@ Currently, I am working on adding this script to the `Scriptable`'s Library. For
 3. Copy and paste the contets of `index.js` and save
 4. Run the script, this will pop up an alert box
 5. Paste your [API key from LunchMoney](https://my.lunchmoney.app/developers)
-6. Choose where you want to save the key
+6. Choose where you want to save the key (Device or iCloud)
 7. Add a new widget to the home screen
 8. Select Scriptable wide box
 9. Select LunchMoneyWidget from the list
