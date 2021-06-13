@@ -8,7 +8,7 @@ Currently, I am working on adding this script to the `Scriptable`'s Library. For
 
 1. Download [Scriptable](https://scriptable.app)
 2. Add new script
-3. Copy and paste the contets of `index.js` and save
+3. Copy and paste the contets of [index.js](https://github.com/amanb014/lunch-money-widget/blob/main/index.js) and save
 4. Run the script, this will pop up an alert box
 5. Paste your [API key from LunchMoney](https://my.lunchmoney.app/developers)
 6. Choose where you want to save the key (Device or iCloud)
