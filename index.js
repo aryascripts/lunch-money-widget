@@ -75,7 +75,7 @@ async function getWidget() {
   const incomeNum = budget.addText(data.income);
   incomeNum.font = regularFont;
   incomeNum.textColor = Color.green();
-  const expenseText = budget.addText(" 🛍 Expense: ");
+  const expenseText = budget.addText(" 🛍 Expenses: ");
   expenseText.font = regularFont;
   expenseText.textColor = regularColor;
   const expenseNum = budget.addText(data.spent);  
