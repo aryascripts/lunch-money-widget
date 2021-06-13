@@ -18,22 +18,17 @@ const BASE_URL = 'https://dev.lunchmoney.app';
              SETUP
 *****************************************************/
 
-
-const widget = getWidget();
+const widget = await getWidget();
 
 Script.setWidget(widget);
 Script.complete();
-
-lunchMoneyGetPendingTransactions();
-// getApi();
-
 
 
 /****************************************************
              WIDGET
 *****************************************************/
 
-function getWidget() {
+async function getWidget() {
   const widget = new ListWidget();
   const gradient = getLinearGradient(COLORS.bg1, COLORS.bg2);
   widget.backgroundGradient = gradient;
@@ -54,8 +49,10 @@ function getWidget() {
   line.textColor = Color.white();
   line.centerAlignText();
   
+  const data = await getAllData();
+  console.log(data)
 
-  const line2 = mainStack.addText('Test2');
+  const line2 = mainStack.addText(`⏳Awaiting Review: ${data.pendingTransactions}`);
   line2.font = regularFont;
   line2.textColor = Color.white();
   
@@ -68,9 +65,13 @@ function getWidget() {
 };
 
 
+async function getAllData() {
+  const pendingTransactions = await lunchMoneyGetPendingTransactions();
 
-
-
+  return {
+    pendingTransactions
+  };
+}
 
 /****************************************************
              UI FUNCTIONS
@@ -88,16 +89,19 @@ function getLinearGradient(color1, color2) {
             API
 *****************************************************/
 
+
 async function lunchMoneyGetPendingTransactions() {
   const url = `${BASE_URL}/v1/transactions`;
-  const query = {
+  const params = {
     limit: 50,
-    status: 'cleared'
+    status: "uncleared"
   };
-  console.log(url);
-  const res = await makeLunchMoneyRequest(url)
-    .then(console.log)
-    .catch(console.log);
+  try {
+    const res = await makeLunchMoneyRequest(url, params);
+    return res.transactions.length;
+  } catch (e) {
+    return "?";
+  }
 }
 
 function makeLunchMoneyRequest(url, params) {
@@ -105,7 +109,6 @@ function makeLunchMoneyRequest(url, params) {
     'Authorization': `Bearer ${LM_ACCESS_TOKEN}`,
     'Content-Type': 'application/json'
   };
-  console.log(headers);
   return makeRequest(url, params, headers);
 }
 
@@ -117,9 +120,7 @@ function makeRequest(url, params, headers, method = 'GET') {
     query += `${key}=${value}`;
   });
   const req = new Request(url + query);
-  console.log(url + query);
   req.headers = headers;
-  console.log(req.headers);
   req.method = method;
   
   return req.loadJSON();
