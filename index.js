@@ -56,13 +56,9 @@ async function getWidget() {
   
   const data = await getAllData();
 
-  const line2 = mainStack.addText(`⏳Awaiting Review: ${data.pendingTransactions}`);
+  const line2 = mainStack.addText(`⏳Awaiting Review: ${data.pendingTransactions} | ❗️Accounts Error: ${data.accountsInError}`);
   line2.font = regularFont;
   line2.textColor = Color.white();
-  
-  const line3 = mainStack.addText('Test3');
-  line3.font = regularFont;
-  line3.textColor = Color.white();
   
   mainStack.addSpacer();
   return widget;
@@ -70,10 +66,12 @@ async function getWidget() {
 
 
 async function getAllData() {
-  const pendingTransactions = await lunchMoneyGetPendingTransactions();
+  const pendingTransactions = await lunchMoneyGetPendingTransactions();  
+  const accountsInError = await lunchMoneyGetAccountsInError();
 
   return {
-    pendingTransactions
+    pendingTransactions,
+    accountsInError
   };
 }
 
@@ -108,7 +106,20 @@ async function lunchMoneyGetPendingTransactions() {
   }
 }
 
-function makeLunchMoneyRequest(url, params) {
+async function lunchMoneyGetAccountsInError() {
+  const ignore = ["active", "inactive", "syncing"];
+  const url = `${BASE_URL}/v1/plaid_accounts`;
+  try {
+    const res = await makeLunchMoneyRequest(url);
+    return res.plaid_accounts
+      .filter(acc => !ignore.some(ig => ig === acc.status))
+      .length;
+  } catch (e) {
+    return "?";
+  }
+}
+
+function makeLunchMoneyRequest(url, params = {}) {
   const headers = {
     'Authorization': `Bearer ${LM_ACCESS_TOKEN}`,
     'Content-Type': 'application/json'
