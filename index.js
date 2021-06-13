@@ -11,6 +11,9 @@ const regularFont = new Font(FONT_NAME, FONT_SIZE);
 const HEADING_TEXT = '💰 LUNCH MONEY UPDATES 💰';
 
 
+const LM_ACCESS_TOKEN = '';
+const BASE_URL = 'https://dev.lunchmoney.app';
+
 /****************************************************
              SETUP
 *****************************************************/
@@ -21,7 +24,8 @@ const widget = getWidget();
 Script.setWidget(widget);
 Script.complete();
 
-
+lunchMoneyGetPendingTransactions();
+// getApi();
 
 
 
@@ -75,6 +79,48 @@ function getWidget() {
 function getLinearGradient(color1, color2) {  
   const gradient = new LinearGradient();       
   gradient.colors = [new Color(color1), new Color(color2)];
-  gradient.locations = [0.0, 1.0]
+  gradient.locations = [0.0, 1.0];
   return gradient;
 };
+
+
+/****************************************************
+            API
+*****************************************************/
+
+async function lunchMoneyGetPendingTransactions() {
+  const url = `${BASE_URL}/api/v1/transactions`;
+  const query = {
+    limit: 50,
+    status: 'cleared'
+  };
+  console.log(url);
+  const res = await makeLunchMoneyRequest(url)
+    .then(console.log)
+    .catch(console.log);
+}
+
+function makeLunchMoneyRequest(url, params) {
+  const headers = {
+    'Authorization': `Bearer ${LM_ACCESS_TOKEN}`,
+    'Content-Type': 'application/json'
+  };
+  console.log(headers);
+  return makeRequest(url, params, headers);
+}
+
+function makeRequest(url, params, headers, method = 'GET') {
+  let query = ``;
+  Object.keys(params).forEach((key, i) => {
+    const value = params[key];
+    query += i === 0 ? '?' : '&';
+    query += `${key}=${value}`;
+  });
+  const req = new Request(url + query);
+  console.log(url + query);
+  req.headers = headers;
+  console.log(req.headers);
+  req.method = method;
+  
+  return req.loadJSON();
+}
