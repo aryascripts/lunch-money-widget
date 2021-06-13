@@ -89,7 +89,7 @@ function getLinearGradient(color1, color2) {
 *****************************************************/
 
 async function lunchMoneyGetPendingTransactions() {
-  const url = `${BASE_URL}/api/v1/transactions`;
+  const url = `${BASE_URL}/v1/transactions`;
   const query = {
     limit: 50,
     status: 'cleared'
