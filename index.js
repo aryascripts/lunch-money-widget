@@ -97,15 +97,20 @@ async function getWidget() {
   const lastUpdated = mainStack.addText(`🕒 Oldest Balance Updates:`);
   lastUpdated.textColor = regularColor;
   lastUpdated.font = regularFont;
-  const plaid = mainStack.addText(`   - Plaid: ${data.plaidOldestUpdate}`)
+  const plaid = mainStack.addText(`   - Plaid: ${data.plaidOldestUpdate}`);
   plaid.font = regularFont;
   plaid.textColor = regularColor;
   
-  const manual = mainStack.addText(`   - Manual: ${data.manualOldestUpdate}`)
+  const manual = mainStack.addText(`   - Manual: ${data.manualOldestUpdate}`);
   manual.font = regularFont;
   manual.textColor = regularColor;
-
+  
+  const message = mainStack.addText(getMessageToDisplay(data));
+  message.font = regularFont;
+  message.textColor = regularColor;
+  
   mainStack.addSpacer();
+  widget.title = "Lunch Money";
   return widget;
 };
 
@@ -132,6 +137,20 @@ async function getAllData() {
   return data;
 }
 
+function getMessageToDisplay(data) {
+  if (data.pendingTransactions > 6) {
+    return "📝 You've got some transactions to review!";
+  }
+  if (data.accountsInError > 1) {
+    return "🧾 Some accounts need your attention.";
+  }
+  if (data.savings.startsWith('-')) {
+    return "💳 Looks little rough, try and save more!";  
+  }
+  else {
+    return "🤑 You're doing great with your saving!";
+  }
+}
 /****************************************************
              UI FUNCTIONS
 *****************************************************/
@@ -142,7 +161,6 @@ function getLinearGradient(color1, color2) {
   gradient.locations = [0.0, 1.0];
   return gradient;
 };
-
 
 /****************************************************
             API
