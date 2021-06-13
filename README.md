@@ -20,3 +20,5 @@ Currently, I am working on adding this script to the `Scriptable`'s Library. For
 Note: the information is cached in iCloud for at least 2 hours. 
 
 ### How to Use (Video)
+[How to Video](https://user-images.githubusercontent.com/3420290/121816934-79eba800-cc4c-11eb-8d0f-fdbeab00ca3e.MOV)
+
