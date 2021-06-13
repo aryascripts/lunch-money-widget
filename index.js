@@ -19,7 +19,6 @@ const BASE_FILE = 'LunchMoneyWidget';
 const API_FILE = "apiKey";
 const CACHE_KEY = "lunchMoneyCache";
 const CACHED_MS = 7200000; // 2 hours
-// const CACHED_MS = 0;
 
 const ICLOUD = "iCloud";
 const LOCAL = "local";
