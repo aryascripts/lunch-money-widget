@@ -1,4 +1,10 @@
 /****************************************************
+      Author: Aman Bhimani
+      Repository: https://github.com/amanb014/lunch-money-widget
+      Website: https://amanbhimani.com
+*****************************************************/
+
+/****************************************************
              CONFIGURATION
 *****************************************************/
 const COLORS = {
