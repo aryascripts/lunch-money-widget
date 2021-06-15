@@ -256,7 +256,7 @@ async function lunchMoneyGetBudgetInfo() {
         if (cat.is_income) {
           data.income += Math.abs(catData?.spending_to_base ?? 0);
         } else {
-          data.spent += catData?.spending_to_base;
+          data.spent += catData?.spending_to_base ?? 0;
         }
       }
     });
