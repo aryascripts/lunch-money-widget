@@ -1,5 +1,5 @@
 # Lunch Money Widget
-An iOS Widget for LunchMoney Status updates, a quick glance that you can have on your phone or iPad.
+An iOS Widget for LunchMoney Status updates, a quick glance that you can have on your phone or iPad
 
 ![Lunch Money Widget](https://user-images.githubusercontent.com/3420290/121816572-6a6b5f80-cc4a-11eb-9b41-f398639fb60c.jpeg)
 
