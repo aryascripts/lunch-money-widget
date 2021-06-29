@@ -1,10 +1,4 @@
 /****************************************************
-      Author: Aman Bhimani
-      Repository: https://github.com/amanb014/lunch-money-widget
-      Website: https://amanbhimani.com
-*****************************************************/
-
-/****************************************************
              CONFIGURATION
 *****************************************************/
 const COLORS = {
@@ -24,7 +18,8 @@ const iCloud = FileManager.iCloud();
 const BASE_FILE = 'LunchMoneyWidget';
 const API_FILE = "apiKey";
 const CACHE_KEY = "lunchMoneyCache";
-const CACHED_MS = 7200000; // 2 hours
+// const CACHED_MS = 7200000; // 2 hours
+const CACHED_MS = 0;
 
 const ICLOUD = "iCloud";
 const LOCAL = "local";
@@ -75,7 +70,7 @@ async function getWidget() {
   const incomeNum = budget.addText(data.income);
   incomeNum.font = regularFont;
   incomeNum.textColor = Color.green();
-  const expenseText = budget.addText(" 🛍 Expenses: ");
+  const expenseText = budget.addText(" 🛍 Expense: ");
   expenseText.font = regularFont;
   expenseText.textColor = regularColor;
   const expenseNum = budget.addText(data.spent);  
@@ -135,7 +130,7 @@ async function getAllData() {
     pendingTransactions: responses[0],
     ...responses[1],
     ...responses[2],
-    manualOldestUpdate: responses[3]
+    ...responses[3]
   };
   
   cache.set(CACHE_KEY, JSON.stringify(data));
@@ -191,11 +186,20 @@ async function lunchMoneyGetAssetsInfo() {
   try {
     const res = await makeLunchMoneyRequest(url);
     let manualLastUpdate = new Date();
+    let account = "";
     res.assets.forEach(acc => {
       const thisAccount = new Date(acc.balance_as_of);
-      if (thisAccount < manualLastUpdate) manualLastUpdate = thisAccount;
+      if (thisAccount < manualLastUpdate) {
+        manualLastUpdate = thisAccount;
+        account = acc.display_name ?? acc.name;
+      }
     });
-    return getReadableDate(manualLastUpdate);
+    
+    const value = getReadableDate(manualLastUpdate) + " - " + account;
+    
+    return {
+      manualOldestUpdate: value
+    }
   } catch (e) {
     console.error(e);
     return "?";
