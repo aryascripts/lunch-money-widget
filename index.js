@@ -82,9 +82,9 @@ async function getWidget() {
   const savingsText = savingsStack.addText("🏦 Your current savings rate: ");
   savingsText.font = regularFont;
   savingsText.textColor = regularColor;
-  const savingsNum = savingsStack.addText(data.savings);
+  const savingsNum = savingsStack.addText(data.savings ?? "$0.00");
   savingsNum.font = regularFont;
-  savingsNum.textColor = data.savings.startsWith('-') ? Color.red() : Color.green();
+  savingsNum.textColor = data.savings?.startsWith('-') ? Color.red() : Color.green();
   savingsStack.addSpacer();
   
   
@@ -143,7 +143,7 @@ function getMessageToDisplay(data) {
   if (data.accountsInError > 1) {
     return "🧾 Some accounts need your attention.";
   }
-  if (data.savings.startsWith('-')) {
+  if (data.savings?.startsWith('-')) {
     return "💳 Looks little rough, try and save more!";  
   }
   else {
@@ -250,7 +250,7 @@ async function lunchMoneyGetBudgetInfo() {
   
   try {
     const res = await makeLunchMoneyRequest(url, params);
-    res.forEach(cat => {
+    res?.forEach(cat => {
       if (!cat.exclude_from_budget && 
           !cat.exclude_from_totals &&
           !cat.is_group) {
@@ -305,7 +305,7 @@ function getMonthStart() {
   const month = now.getMonth()+1;
   const monthStr = month < 10 ? "0" + month : month;
   const start_date = `${now.getFullYear()}-${monthStr}-01`;
-  const end_date = `${now.getFullYear()}-${monthStr}-${now.getDate()}`;
+  const end_date = `${now.getFullYear()}-${monthStr}-10`;
 return { start_date, end_date };
 }
 
