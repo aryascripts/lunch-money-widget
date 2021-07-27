@@ -256,10 +256,15 @@ async function lunchMoneyGetBudgetInfo() {
           !cat.is_group) {
         const k = Object.keys(cat.data)[0];
         const catData = cat.data[k];
+        const nonRecurring = Math.abs(catData?.spending_to_base ?? 0);
+        const recurring = 
+          cat.recurring?.list?.reduce(
+            (sum, next) => sum + Math.abs(next.to_base), 0)
+          ?? 0;
         if (cat.is_income) {
-          data.income += Math.abs(catData?.spending_to_base ?? 0);
+          data.income += nonRecurring + recurring;
         } else {
-          data.spent += catData?.spending_to_base ?? 0;
+          data.spent += nonRecurring + recurring;
         }
       }
     });
